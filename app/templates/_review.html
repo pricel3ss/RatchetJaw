@@ -1,0 +1,23 @@
+<table id="dtBasicExample" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+        <tr>
+            <td width="70px">
+                <a href="{{ url_for('main.user', username=review.author.username) }}">
+                    <img src="{{ review.author.avatar(70) }}" />
+                </a>
+            </td>
+            <td>
+                {% set user_link %}
+                    <a href="{{ url_for('main.user', username=review.author.username) }}">
+                        {{ review.author.username }}
+                    </a>
+                {% endset %}
+                {{ _('%(username)s posted %(when)s',
+                    username=user_link, when=moment(review.Date).fromNow()) }}
+                <br>
+            </td>
+        <th>{{ review.shipper}}</th>
+        <th>{{ review.consignee}}</th>
+        </tr>
+        <span id="review{{ review.id }}">{{ review.comments }}</span>
+
+</table>

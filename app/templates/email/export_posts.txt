@@ -1,0 +1,7 @@
+Dear {{ user.username }},
+
+Please find attached the archive of your rates that you have posted.
+
+Sincerely,
+
+The TruckThat Team

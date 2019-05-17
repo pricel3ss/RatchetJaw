@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
+
+
+{% block app_content %}
+        <h1>{{ _('Search for Rates') }}</h1>
+
+        <div class="row">
+            <div class="col-md-4">
+                {{ form.hidden_tag() }}
+                {{ wtf.quick_form(form) }}
+            </div>
+        </div>
+
+        <p>
+       <div class="flight-container" style="overflow: auto; max-height: 80vh">
+            <div class="table-responsive">
+                <table id="dtBasicExample" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+                    <thead>
+                        <tr>
+                            <th scope="col">Rate Per Mile</th>
+                            <th scope="col">Origin</th>
+                            <th scope="col">Destination</th>
+                            <th scope="col">Equipment Type</th>
+                            <th scope="col">timestamp</th>
+                            <th scope="col">Hazardous?</th>
+                            <th scope="col">Brokered?</th>
+                            <th scope="col">Weather Rating</th>
+                            <th scope="col">Dead Head</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for rate in rates %}
+                        <tr id={{ rate.id }}>
+                            <th>{{ rate.rate_per_mile}}</th>
+                            <th>{{ rate.origin}}</th>
+                            <th>{{ rate.destination}}</th>
+                            <th>{{ rate.equipment_type}}</th>
+                            <th>{{ rate.timestamp}}</th>
+                            <th>{{ rate.hazardous_freight}}</th>
+                            <th>{{ rate.brokered_load}}</th>
+                            <th>{{ rate.weather}}</th>
+                            <th>{{ rate.deadhead}}</th>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+    <nav aria-label="...">
+        <ul class="pager">
+            <li class="previous{% if not prev_url %} disabled{% endif %}">
+                <a href="{{ prev_url or '#' }}">
+                    <span aria-hidden="true">&larr;</span> {{ _('Newer Rates') }}
+                </a>
+            </li>
+            <li class="next{% if not next_url %} disabled{% endif %}">
+                <a href="{{ next_url or '#' }}">
+                    {{ _('Older Rates') }} <span aria-hidden="true">&rarr;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</p>
+{% endblock %}
+
+
+
+{% block scripts %}
+    {{ super() }}
+    {{ moment.include_moment() }}
+    {{ moment.lang(g.locale) }}
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB-yv6bp1RU25g-Icl5CKHSllLcqAwWuSI&libraries=places"></script>
+    <script>
+
+    var options = {
+      types: ['(cities)'],
+      componentRestrictions: {country: "us"}
+    };
+
+    function init1() {
+                var input = document.getElementById('locationTextField1');
+                var autocomplete = new google.maps.places.Autocomplete(input, options);
+            }
+
+            google.maps.event.addDomListener(window, 'load', init1);
+
+     function init2() {
+                var input = document.getElementById('locationTextField2');
+                var autocomplete = new google.maps.places.Autocomplete(input, options);
+            }
+
+            google.maps.event.addDomListener(window, 'load', init2);
+    </script>
+{% endblock %}
